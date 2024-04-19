@@ -56,3 +56,14 @@ student_id,student_name,subject,score
 10,Alice,English,75
 11,Bob,English,78
 12,Emily,English,85
+
+SELECT 
+    student_id,
+    student_name,
+    AVG(score) AS average_score
+FROM 
+    your_table_name
+GROUP BY 
+    student_id,
+    student_name;
+
