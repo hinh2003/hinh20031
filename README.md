@@ -10,3 +10,54 @@ transaction_id,customer_id,product_id,transaction_date,amount
 8,103,4,2024-04-06,40.00
 9,105,1,2024-04-06,50.00
 10,102,3,2024-04-07,25.00
+
+SELECT 
+    DATE_FORMAT(transaction_date, 'yyyy-MM') AS month,
+    SUM(quantity) AS total_quantity_sold
+FROM 
+    your_table_name
+GROUP BY 
+    DATE_FORMAT(transaction_date, 'yyyy-MM');
+
+
+SELECT 
+    month,
+    product_id,
+    MAX(total_quantity_sold) AS max_quantity_sold
+FROM (
+    SELECT 
+        DATE_FORMAT(transaction_date, 'yyyy-MM') AS month,
+        product_id,
+        SUM(quantity) AS total_quantity_sold
+    FROM 
+        your_table_name
+    GROUP BY 
+        DATE_FORMAT(transaction_date, 'yyyy-MM'),
+        product_id
+) sub
+GROUP BY 
+    month;
+
+
+
+SELECT 
+    customer_id
+FROM 
+    your_table_name
+GROUP BY 
+    customer_id
+HAVING 
+    COUNT(DISTINCT product_id) >= 2;
+
+
+SELECT 
+    customer_id,
+    SUM(amount) AS total_amount_spent
+FROM 
+    your_table_name
+GROUP BY 
+    customer_id
+ORDER BY 
+    total_amount_spent DESC
+LIMIT 3;
+
