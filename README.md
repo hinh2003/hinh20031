@@ -67,3 +67,32 @@ GROUP BY
     student_id,
     student_name;
 
+
+    SELECT 
+    subject,
+    SUM(score) AS total_score
+FROM 
+    your_table_name
+GROUP BY 
+    subject;
+
+
+SELECT 
+    student_id,
+    student_name,
+    MAX(score) AS highest_score,
+    MIN(score) AS lowest_score
+FROM 
+    your_table_name;
+
+
+SELECT 
+    subject
+FROM 
+    your_table_name
+GROUP BY 
+    subject
+HAVING 
+    MIN(score) >= 5;
+
+
