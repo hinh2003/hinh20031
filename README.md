@@ -12,12 +12,13 @@ transaction_id,customer_id,product_id,transaction_date,amount
 10,102,3,2024-04-07,25.00
 
 SELECT 
-    DATE_FORMAT(transaction_date, 'yyyy-MM') AS month,
+    SUBSTR(transaction_date, 1, 7) AS month,
     SUM(quantity) AS total_quantity_sold
 FROM 
     your_table_name
 GROUP BY 
-    DATE_FORMAT(transaction_date, 'yyyy-MM');
+    SUBSTR(transaction_date, 1, 7);
+
 
 
 SELECT 
