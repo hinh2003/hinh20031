@@ -22,26 +22,6 @@ GROUP BY
 
 
 SELECT 
-    month,
-    product_id,
-    MAX(total_quantity_sold) AS max_quantity_sold
-FROM (
-    SELECT 
-        DATE_FORMAT(transaction_date, 'yyyy-MM') AS month,
-        product_id,
-        SUM(quantity) AS total_quantity_sold
-    FROM 
-        your_table_name
-    GROUP BY 
-        DATE_FORMAT(transaction_date, 'yyyy-MM'),
-        product_id
-) sub
-GROUP BY 
-    month;
-
-
-
-SELECT 
     customer_id
 FROM 
     your_table_name
@@ -61,4 +41,3 @@ GROUP BY
 ORDER BY 
     total_amount_spent DESC
 LIMIT 3;
-
