@@ -41,3 +41,18 @@ GROUP BY
 ORDER BY 
     total_amount_spent DESC
 LIMIT 3;
+
+
+student_id,student_name,subject,score
+1,John,Math,90
+2,Alice,Math,85
+3,Bob,Math,92
+4,Emily,Math,88
+5,John,Science,85
+6,Alice,Science,90
+7,Bob,Science,88
+8,Emily,Science,92
+9,John,English,80
+10,Alice,English,75
+11,Bob,English,78
+12,Emily,English,85
