@@ -23,3 +23,7 @@ ORDER BY total_tweets DESC;
 SELECT LEFT(timestamp, 10) AS ngay, COUNT(*) AS so_luong_tweet
 FROM giao_dich
 GROUP BY ngay;
+
+SELECT DATE(timestamp) AS ngay, COUNT(*) AS so_luong_tweet
+FROM giao_dich
+GROUP BY ngay;
