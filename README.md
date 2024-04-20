@@ -21,6 +21,10 @@ GROUP BY location
 ORDER BY total_tweets DESC;
 
 SELECT LEFT(timestamp, 10) AS ngay, COUNT(*) AS so_luong_tweet
+
+ALTER TABLE giao_dich
+ALTER COLUMN timestamp DATE;
+
 FROM giao_dich
 GROUP BY ngay;
 
