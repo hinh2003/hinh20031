@@ -6,3 +6,20 @@ SELECT username,
        SUM(favorite_count) AS total_favorites
 FROM giao_dich
 GROUP BY username;
+
+
+SELECT username, SUM(retweet_count) AS total_retweets
+FROM giao_dich
+GROUP BY username
+ORDER BY total_retweets DESC
+LIMIT 1;
+
+SELECT location, COUNT(*) AS total_tweets
+FROM giao_dich
+WHERE location IS NOT NULL
+GROUP BY location
+ORDER BY total_tweets DESC;
+
+SELECT DATE(timestamp) AS ngay, COUNT(*) AS so_luong_tweet
+FROM giao_dich
+GROUP BY ngay;
