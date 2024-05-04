@@ -1,33 +1,62 @@
-https://hortonassets.s3.amazonaws.com/tutorial/hive/Twitterdata.txt
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.DriverManager;
 
-Dữliệubaogồmcáctrườngnhư:id,username,content,timestamp,location,retweet_count,vàfavorite_count.
-SELECT username, 
-       SUM(retweet_count) AS total_retweets, 
-       SUM(favorite_count) AS total_favorites
-FROM giao_dich
-GROUP BY username;
+public class Main {
 
+	private static String driverClass = "org.apache.hive.jdbc.HiveDriver";
 
-SELECT username, SUM(retweet_count) AS total_retweets
-FROM giao_dich
-GROUP BY username
-ORDER BY total_retweets DESC
-LIMIT 1;
+	public static void main(String[] args) throws SQLException {
 
-SELECT location, COUNT(*) AS total_tweets
-FROM giao_dich
-WHERE location IS NOT NULL
-GROUP BY location
-ORDER BY total_tweets DESC;
+		try {
+			Class.forName(driverClass);
+		} catch (ClassNotFoundException exception) {
 
-SELECT LEFT(timestamp, 10) AS ngay, COUNT(*) AS so_luong_tweet
+			exception.printStackTrace();
+			System.exit(1);
+		}
+		Connection con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "", "");
+		Statement stmt = con.createStatement();
 
-ALTER TABLE giao_dich
-ALTER COLUMN timestamp DATE;
+		String tableName = "data";
+		stmt.execute("drop table " + tableName);
+		stmt.execute("create table " + tableName + " (city string, temperature int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE");
 
-FROM giao_dich
-GROUP BY ngay;
+		// show tables
+		String sql = "show tables '" + tableName + "'";
+		System.out.println("Running: " + sql);
+		ResultSet res = stmt.executeQuery(sql);
+		if (res.next()) {
+			System.out.println(res.getString(1));
+		}
 
-SELECT DATE(timestamp) AS ngay, COUNT(*) AS so_luong_tweet
-FROM giao_dich
-GROUP BY ngay;
+		// describe table
+		sql = "describe " + tableName;
+		System.out.println("Running: " + sql);
+		res = stmt.executeQuery(sql);
+		while (res.next()) {
+			System.out.println(res.getString(1) + "\t" + res.getString(2));
+		}
+
+		// load data into table
+		String filepath = "/home/cloudera/Desktop/data.csv";
+		sql = "load data local inpath '" + filepath + "' into table "
+				+ tableName;
+		System.out.println("Running: " + sql);
+		stmt.execute(sql);
+
+		// select * query
+		sql = "select * from " + tableName;
+		System.out.println("Running: " + sql);
+		res = stmt.executeQuery(sql);
+		while (res.next()) {
+			System.out.println(String.valueOf(res.getString(1)) + "\t"
+					+ res.getInt(2));
+		}
+
+		stmt.close();
+		con.close();
+	}
+}
