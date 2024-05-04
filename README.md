@@ -1,11 +1,34 @@
-transaction_id,customer_id,product_id,quantity,unit_price,timestamp
-1,101,1,2,10.99,2023-01-01 08:30:00
-2,102,3,1,5.99,2023-01-01 09:45:00
-3,103,2,3,8.99,2023-01-02 10:15:00
-4,104,1,1,10.99,2023-01-02 12:30:00
-5,105,4,2,15.99,2023-01-03 14:45:00
-6,106,3,1,5.99,2023-01-04 16:00:00
-7,107,2,3,8.99,2023-01-04 18:15:00
-8,108,1,1,10.99,2023-01-05 20:30:00
-9,109,4,2,15.99,2023-01-06 22:45:00
-10,110,3,1,5.99,2023-01-07 01:00:00
+ublic class SalesAnalysis {
+    public static void main(String[] args) {
+        String driverName = "org.apache.hive.jdbc.HiveDriver";
+        String url = "jdbc:hive2://localhost:10000/default";
+        String username = "";
+        String password = "";
+
+        try {
+            Class.forName(driverName);
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement stmt = conn.createStatement();
+
+            // Thực hiện truy vấn Hive để lấy tổng doanh số bán hàng trong mỗi ngày/tháng/năm
+            String query = "SELECT DATE_FORMAT(timestamp, 'yyyy-MM-dd') AS sale_date, " +
+                           "SUM(quantity * unit_price) AS total_sales " +
+                           "FROM transactions " +
+                           "GROUP BY DATE_FORMAT(timestamp, 'yyyy-MM-dd')";
+            ResultSet rs = stmt.executeQuery(query);
+
+            // In ra kết quả
+            System.out.println("Doanh số bán hàng theo ngày:");
+            while (rs.next()) {
+                String saleDate = rs.getString("sale_date");
+                double totalSales = rs.getDouble("total_sales");
+                System.out.println(saleDate + ": " + totalSales);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
