@@ -1,4 +1,6 @@
-ublic class SalesAnalysis {
+import java.sql.*;
+
+public class SalesAnalysis {
     public static void main(String[] args) {
         String driverName = "org.apache.hive.jdbc.HiveDriver";
         String url = "jdbc:hive2://localhost:10000/default";
@@ -32,3 +34,4 @@ ublic class SalesAnalysis {
             e.printStackTrace();
         }
     }
+}
