@@ -13,10 +13,10 @@ public class SalesAnalysis {
             Statement stmt = conn.createStatement();
 
             // Thực hiện truy vấn Hive để lấy tổng doanh số bán hàng trong mỗi ngày/tháng/năm
-            String query = "SELECT DATE_FORMAT(timestamp, 'yyyy-MM-dd') AS sale_date, " +
+            String query = "SELECT SUBSTR(timestamp, 1, 10) AS sale_date, " +
                            "SUM(quantity * unit_price) AS total_sales " +
                            "FROM transactions " +
-                           "GROUP BY DATE_FORMAT(timestamp, 'yyyy-MM-dd')";
+                           "GROUP BY SUBSTR(timestamp, 1, 10)";
             ResultSet rs = stmt.executeQuery(query);
 
             // In ra kết quả
