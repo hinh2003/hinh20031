@@ -33,5 +33,34 @@ public class SalesAnalysis {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+
+
+   // Thực hiện truy vấn Hive để đếm số lượng giao dịch trong mỗi ngày/tháng/năm
+            String query = "SELECT SUBSTR(timestamp, 1, 10) AS transaction_date, " +
+                           "COUNT(*) AS transaction_count " +
+                           "FROM transactions " +
+                           "GROUP BY SUBSTR(timestamp, 1, 10)";
+            ResultSet rs = stmt.executeQuery(query);
+
+            // In ra kết quả
+            System.out.println("Số lượng giao dịch theo ngày:");
+            while (rs.next()) {
+                String transactionDate = rs.getString("transaction_date");
+                int transactionCount = rs.getInt("transaction_count");
+                System.out.println(transactionDate + ": " + transactionCount);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 }
